@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>录入学生信息</title>
+
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .main {
+            margin-top: 100px;
+        }
+    </style>
+</head>
+
+<body>
+<!-- 导航栏 -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">测试项目</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/index.html">学生信息</a></li>
+                <li class="active"><a href="#add">录入学生</a></li>
+                <li><a href="#about">关于</a></li>
+                <li><a href="#contact">联系</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container main">
+    <!--    action请求到哪里 写在controller层-->
+    <form action="/doAdd" method="post" onsubmit="doAdd()" id="form1">
+        <div class="form-group">
+            <label for="recipient-name" class="control-label">姓名:</label>
+
+            <input name="grade.id" id="gid" type="hidden"/>
+            <input name="grade.name" id="gname" type="hidden"/>
+            <input name="elective.id" id="eid" type="hidden"/>
+            <input name="elective.name" id="ename" type="hidden"/>
+
+
+            <input type="text" class="form-control" id="recipient-name" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="recipient-sex" class="control-label">性别:</label>
+            <!--                            <input type="text" class="form-control" id="recipient-sex">-->
+            <select id="recipient-sex" class="form-control" style="width:100% !important" name="sex" required>
+                <option value="1" selected>男</option>
+                <option value="2">女</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="recipient-phone" class="control-label">电话:</label>
+            <input type="text" class="form-control" id="recipient-phone" name="phone" required
+                   pattern="^1(3[0-9]|4[01456879]|5[0-35-9]|6[2567]|7[0-8]|8[0-9]|9[0-35-9])\d{8}$"
+                    oninvalid="setcustomValidity('错误');" oninput="setcustomValidity('');"
+            >
+        </div>
+        <div class="form-group">
+            <label for="recipient-grade" class="control-label">班级:</label>
+            <select class="form-control" id="recipient-grade" name="gid" style="width:100% !important">
+                <option value="">所有</option>
+                <option th:each="grade:${grades}" th:value="${grade.id}" th:text="${grade.name}">
+                </option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="recipient-elective" class="control-label">选修:</label>
+            <!--            <select class="form-control" id="recipient-elective" style="width:100% !important">-->
+            <!--                <option>C++</option>-->
+            <!--                <option>C#</option>-->
+            <!--                <option>JAVA</option>-->
+            <!--            </select>-->
+            <select class="form-control" id="recipient-elective" style="width:100% !important">
+                <!--                                <option>C++</option>-->
+                <!--                                <option>C#</option>-->
+                <!--                                <option>JAVA</option>-->
+                <option th:each="elective:${electives}" th:value="${elective.id}"
+                        th:text="${elective.name}">
+                </option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="message-text" class="control-label">地址:</label>
+            <textarea class="form-control" id="message-text" name="address" required></textarea>
+        </div>
+        <div class="form-group">
+            <input class="btn btn-primary" type="submit" value="添加">
+        </div>
+    </form>
+
+</div>
+<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script>
+    function doAdd() {
+        var gradeId = $("#recipient-grade").val();
+        var gradeName = $("#recipient-grade").find("option:selected").text();
+        var electiveId = $("#recipient-elective").val();
+        var electiveName = $("#recipient-elective").find("option:selected").text();
+
+        $("#gid").val(gradeId);
+        $("#ganme").val(gradeName);
+        $("#eid").val(electiveId);
+        $("#eanme").val(electiveName);
+
+        $("form1").submit();
+    }
+</script>
+</body>
+
+</html>
